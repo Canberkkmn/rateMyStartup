@@ -1,8 +1,14 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+
 interface Startup {
   id: string;
   name: string;
   description: string;
   rating: number;
+  votes: number;
 }
 
 async function getStartupDetails(id: string): Promise<Startup | null> {
@@ -16,21 +22,43 @@ async function getStartupDetails(id: string): Promise<Startup | null> {
     }
 
     const startups: Startup[] = await res.json();
+
     return startups.find((s) => s.id === id) || null;
   } catch (error) {
     console.error("Error fetching startup details:", error);
+
     return null;
   }
 }
 
-export default async function StartupPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = await params;
+export default function StartupPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [startup, setStartup] = useState<Startup | null>(null);
 
-  const startup = await getStartupDetails(id);
+  useEffect(() => {
+    if (params.id) {
+      getStartupDetails(params.id as string).then(setStartup);
+    }
+  }, [params.id]);
+
+  async function handleVote(rating: number) {
+    if (!startup) {
+      return;
+    }
+
+    const res = await fetch("http://localhost:3001/api/startups", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: startup.id, rating }),
+    });
+
+    if (res.ok) {
+      const updatedStartup = await res.json();
+
+      setStartup(updatedStartup);
+    }
+  }
 
   if (!startup) {
     return (
@@ -46,8 +74,21 @@ export default async function StartupPage({
       <p className="text-gray-600 mt-2">{startup.description}</p>
       <div className="mt-4">
         <span className="text-yellow-500 font-bold">
-          ⭐ {startup.rating} / 5
+          ⭐ {startup.rating.toFixed(1)} / 5
         </span>
+        <p className="text-gray-500">({startup.votes} votes)</p>
+      </div>
+
+      <div className="mt-4 space-x-2">
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <button
+            key={rating}
+            onClick={() => handleVote(rating)}
+            className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
+          >
+            {rating} ⭐
+          </button>
+        ))}
       </div>
     </main>
   );
