@@ -1,36 +1,185 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 RateMyStartup
 
-## Getting Started
+RateMyStartup is a platform for reviewing and rating startups. Users can browse startups, add new ones, and vote on existing startups.
 
-First, run the development server:
+## 📌 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 🔍 **Startup Listing:** Displays all registered startups from PostgreSQL.
+- ➕ **Add Startup:** Users can submit new startups.
+- ⭐ **Vote on Startups:** Users can rate startups from 1 to 5 stars.
+- 🗃 **Persistent Database:** Data is stored using PostgreSQL.
+
+---
+
+## 🛠 Technologies Used
+
+- [Next.js](https://nextjs.org/) - React-based web framework
+- [TypeScript](https://www.typescriptlang.org/) - For type safety
+- [Tailwind CSS](https://tailwindcss.com/) - UI styling
+- [PostgreSQL](https://www.postgresql.org/) - Persistent database
+- [Prisma](https://www.prisma.io/) - ORM & database management
+
+---
+
+## 🚀 Setup & Installation
+
+### 1️⃣ Clone the Repository
+
+```sh
+git clone https://github.com/your-username/ratemystartup.git
+cd ratemystartup
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2️⃣ Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3️⃣ Start PostgreSQL and Create Database
 
-## Learn More
+If PostgreSQL is not installed, install it and then run:
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+psql -U postgres
+CREATE DATABASE ratemystartup;
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4️⃣ Configure .env File
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+📂 **Create a `.env` file in the root directory and add:**
 
-## Deploy on Vercel
+```
+DATABASE_URL="postgresql://postgres:password@localhost:5432/ratemystartup"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 5️⃣ Migrate Database Schema with Prisma
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```sh
+npx prisma migrate dev --name init
+```
+
+### 6️⃣ Start the Server
+
+```sh
+npm run dev
+```
+
+🔹 **Project will run at `http://localhost:3001`.**
+
+---
+
+## 🔥 API Usage
+
+### **1️⃣ Get All Startups**
+
+```
+GET /api/startups
+```
+
+📌 **Sample Response:**
+
+```json
+[
+  {
+    "id": "1",
+    "name": "TechX",
+    "description": "AI-powered technology startup.",
+    "rating": 4.8,
+    "votes": 10
+  }
+]
+```
+
+### **2️⃣ Add a New Startup**
+
+```
+POST /api/startups
+```
+
+📌 **Request Body:**
+
+```json
+{
+  "name": "AI Startup",
+  "description": "A startup focused on AI solutions."
+}
+```
+
+📌 **Successful Response:**
+
+```json
+{
+  "id": "2",
+  "name": "AI Startup",
+  "description": "A startup focused on AI solutions.",
+  "rating": 0,
+  "votes": 0
+}
+```
+
+### **3️⃣ Vote on a Startup**
+
+```
+PATCH /api/startups/:id
+```
+
+📌 **Request Body:**
+
+```json
+{
+  "id": "1",
+  "rating": 5
+}
+```
+
+📌 **Successful Response:**
+
+```json
+{
+  "id": "1",
+  "name": "TechX",
+  "description": "AI-powered technology startup.",
+  "rating": 4.9,
+  "votes": 11
+}
+```
+
+---
+
+## 📸 Screenshots
+
+📌 **Home Page:** Startup listing
+
+📌 **Add Startup Page:** Form to submit a new startup
+
+📌 **Startup Detail Page:** Voting and startup details
+
+---
+
+## 🎯 Contributing
+
+1. **Fork the repository** to your GitHub account.
+2. Create a **new branch**:
+
+```sh
+git checkout -b new-feature
+```
+
+3. **Commit your changes**:
+
+```sh
+git commit -m "Added a new feature."
+```
+
+4. **Open a Pull Request and contribute!** 🚀
+
+---
+
+## 📜 License
+
+MIT License © 2024 RateMyStartup
+
+---
+
+💡 **Want to contribute to RateMyStartup? Feel free to send a pull request!** 🚀
