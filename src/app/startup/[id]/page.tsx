@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 interface Startup {
   id: string;
@@ -33,24 +33,26 @@ async function getStartupDetails(id: string): Promise<Startup | null> {
 
 export default function StartupPage() {
   const params = useParams();
-  const router = useRouter();
   const [startup, setStartup] = useState<Startup | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (params.id) {
-      getStartupDetails(params.id as string).then(setStartup);
-    }
+    if (!params.id) return;
+
+    setLoading(true);
+    getStartupDetails(params.id as string).then((data) => {
+      setStartup(data);
+      setLoading(false);
+    });
   }, [params.id]);
 
-  async function handleVote(rating: number) {
-    if (!startup) {
-      return;
-    }
+  async function handleVote(id: string, rating: number) {
+    if (!startup) return;
 
-    const res = await fetch("http://localhost:3001/api/startups", {
+    const res = await fetch(`http://localhost:3001/api/startups`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: startup.id, rating }),
+      body: JSON.stringify({ id, rating }),
     });
 
     if (res.ok) {
@@ -60,7 +62,15 @@ export default function StartupPage() {
     }
   }
 
-  if (!startup) {
+  if (loading) {
+    return (
+      <div className="text-center text-gray-600 text-xl mt-10">
+        Loading startup details...
+      </div>
+    );
+  }
+
+  if (!loading && !startup) {
     return (
       <div className="text-center text-red-500 text-xl mt-10">
         Startup not found.
@@ -70,20 +80,20 @@ export default function StartupPage() {
 
   return (
     <main className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">
-      <h1 className="text-3xl font-bold">{startup.name}</h1>
-      <p className="text-gray-600 mt-2">{startup.description}</p>
+      <h1 className="text-3xl font-bold">{startup?.name}</h1>
+      <p className="text-gray-600 mt-2">{startup?.description}</p>
       <div className="mt-4">
         <span className="text-yellow-500 font-bold">
-          ⭐ {startup.rating.toFixed(1)} / 5
+          ⭐ {startup?.rating.toFixed(1)} / 5
         </span>
-        <p className="text-gray-500">({startup.votes} votes)</p>
+        <p className="text-gray-500">({startup?.votes} votes)</p>
       </div>
 
       <div className="mt-4 space-x-2">
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
             key={rating}
-            onClick={() => handleVote(rating)}
+            onClick={() => handleVote(startup?.id as string, rating)}
             className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
           >
             {rating} ⭐

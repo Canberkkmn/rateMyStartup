@@ -34,7 +34,9 @@ export default async function Home() {
                   {startup.name}
                 </span>
               </Link>
-              <p className="text-gray-500">⭐ {startup.rating} / 5</p>
+              <p className="text-gray-500">
+                ⭐ {startup.rating.toFixed(1)} / 5
+              </p>
             </li>
           ))
         ) : (

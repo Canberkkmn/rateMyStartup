@@ -16,7 +16,6 @@ export async function GET() {
   }
 }
 
-// 🔹 POST /api/startups - Yeni startup ekle
 export async function POST(req: Request) {
   try {
     const { name, description } = await req.json();
@@ -43,7 +42,6 @@ export async function POST(req: Request) {
   }
 }
 
-// 🔹 PATCH /api/startups/:id - Startup'a oy verme
 export async function PATCH(req: Request) {
   try {
     const { id, rating } = await req.json();
