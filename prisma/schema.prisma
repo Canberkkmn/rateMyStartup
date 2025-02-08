@@ -8,10 +8,20 @@ datasource db {
 }
 
 model Startup {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   description String
-  rating      Float    @default(0)
-  votes       Int      @default(0)
-  createdAt   DateTime @default(now())
+  rating      Float     @default(0)
+  votes       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  comments    Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  author    String
+  startupId String
+  startup   Startup  @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }
