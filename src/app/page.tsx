@@ -1,4 +1,5 @@
-import Link from "next/link";
+import StartupList from "@/components/StartupList";
+import AddStartupButton from "@/components/AddStartupButton";
 
 async function getStartups() {
   const res = await fetch("http://localhost:3001/api/startups", {
@@ -19,30 +20,9 @@ export default async function Home() {
     <main className="max-w-4xl mx-auto p-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-4xl font-bold">🚀 Top Startups</h1>
-        <Link href="/add-startup">
-          <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
-            + Add Startup
-          </button>
-        </Link>
+        <AddStartupButton />
       </div>
-      <ul className="space-y-4">
-        {startups.length > 0 ? (
-          startups.map((startup: any) => (
-            <li key={startup.id} className="p-4 bg-white shadow rounded-md">
-              <Link href={`/startup/${startup.id}`}>
-                <span className="text-blue-600 text-lg font-semibold hover:underline">
-                  {startup.name}
-                </span>
-              </Link>
-              <p className="text-gray-500">
-                ⭐ {startup.rating.toFixed(1)} / 5
-              </p>
-            </li>
-          ))
-        ) : (
-          <p className="text-gray-500">No startups found.</p>
-        )}
-      </ul>
+      <StartupList startups={startups} />
     </main>
   );
 }

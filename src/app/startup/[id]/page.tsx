@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
+import StartupDetails from "@/components/StartupDetails";
+import CommentList from "@/components/CommentList";
+import CommentForm from "@/components/CommentForm";
+import LoadingMessage from "@/components/LoadingMessage";
+import ErrorMessage from "@/components/ErrorMessage";
 
 interface Startup {
   id: string;
@@ -22,148 +27,112 @@ export default function StartupPage() {
   const params = useParams();
   const [startup, setStartup] = useState<Startup | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState("");
-  const [author, setAuthor] = useState("");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!params.id) return;
-
-    async function fetchData() {
-      setLoading(true);
-      const res = await fetch(`http://localhost:3001/api/startups`);
-      const startups: Startup[] = await res.json();
-      const startup = startups.find((s) => s.id === params.id);
-      setStartup(startup || null);
-      setLoading(false);
+  const fetchData = useCallback(async () => {
+    if (!params.id) {
+      return;
     }
 
-    async function fetchComments() {
+    try {
+      setLoading(true);
+
+      const res = await fetch(
+        `http://localhost:3001/api/startups/${params.id}`
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch startup");
+
+      const data = await res.json();
+
+      -setStartup(data);
+    } catch (error) {
+      setStartup(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [params.id]);
+
+  const fetchComments = useCallback(async () => {
+    try {
       const res = await fetch(
         `http://localhost:3001/api/comments?startupId=${params.id}`
       );
       if (res.ok) {
         setComments(await res.json());
       }
+    } catch (error) {
+      console.error("Error fetching comments:", error);
     }
-
-    fetchData();
-    fetchComments();
   }, [params.id]);
 
-  async function handleAddComment() {
-    if (!newComment.trim() || !author.trim()) return;
-
-    const res = await fetch("http://localhost:3001/api/comments", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        content: newComment,
-        author,
-        startupId: params.id,
-      }),
-    });
-
-    if (res.ok) {
-      const newCommentData = await res.json();
-      setComments([newCommentData, ...comments]);
-      setNewComment("");
-      setAuthor("");
-    }
-  }
+  useEffect(() => {
+    fetchData();
+    fetchComments();
+  }, [fetchData, fetchComments]);
 
   async function handleVote(rating: number) {
     if (!startup) return;
 
-    const res = await fetch("http://localhost:3001/api/startups", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: startup.id, rating }),
-    });
+    setStartup({ ...startup, rating });
 
-    if (res.ok) {
-      const updatedStartup = await res.json();
-      setStartup(updatedStartup);
+    try {
+      const res = await fetch("http://localhost:3001/api/startups", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: startup.id, rating }),
+      });
+
+      if (res.ok) {
+        const updatedStartup = await res.json();
+        setStartup(updatedStartup);
+      } else {
+        throw new Error("Vote update failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update vote.");
     }
   }
 
-  if (loading)
-    return (
-      <div className="text-center text-gray-600 text-xl mt-10">Loading...</div>
-    );
-  if (!startup)
-    return (
-      <div className="text-center text-red-500 text-xl mt-10">
-        Startup not found.
-      </div>
-    );
+  async function handleAddComment(author: string, content: string) {
+    if (!author.trim() || !content.trim()) return;
+
+    try {
+      const res = await fetch("http://localhost:3001/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          startupId: params.id,
+          author,
+          content,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to add comment");
+      }
+
+      fetchComments();
+    } catch (error) {
+      console.error("Error adding comment:", error);
+      alert("Failed to add comment. Please try again.");
+    }
+  }
+
+  if (loading) {
+    return <LoadingMessage />;
+  }
+
+  if (!startup) {
+    return <ErrorMessage message="Startup not found." />;
+  }
 
   return (
     <main className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">
-      <h1 className="text-3xl font-bold">{startup.name}</h1>
-      <p className="text-gray-600 mt-2">{startup.description}</p>
-      <div className="mt-4">
-        <span className="text-yellow-500 font-bold">
-          ⭐ {startup.rating.toFixed(1)} / 5
-        </span>
-        <p className="text-gray-500">({startup.votes} votes)</p>
-      </div>
-
-      <div className="mt-4 space-x-2">
-        {[1, 2, 3, 4, 5].map((rating) => (
-          <button
-            key={rating}
-            onClick={() => handleVote(rating)}
-            className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
-          >
-            {rating} ⭐
-          </button>
-        ))}
-      </div>
-
-      {/* Comments Section */}
-      <div className="mt-6">
-        <h2 className="text-2xl font-bold mb-4">Comments</h2>
-
-        {/* New Comment Form */}
-        <div className="mb-4 p-4 border rounded bg-gray-100">
-          <input
-            type="text"
-            placeholder="Your name"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            className="w-full p-2 mb-2 border rounded"
-          />
-          <textarea
-            placeholder="Write a comment..."
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            className="w-full p-2 border rounded"
-          ></textarea>
-          <button
-            onClick={handleAddComment}
-            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-          >
-            Add Comment
-          </button>
-        </div>
-
-        {/* Comment List */}
-        {comments.length > 0 ? (
-          comments.map((comment) => (
-            <div key={comment.id} className="p-3 border-b">
-              <p className="font-semibold">{comment.author}</p>
-              <p className="text-gray-600">{comment.content}</p>
-              <p className="text-sm text-gray-400">
-                {new Date(comment.createdAt).toLocaleString()}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No comments yet.</p>
-        )}
-      </div>
+      <StartupDetails startup={startup} onVote={handleVote} />
+      <CommentForm onAddComment={handleAddComment} />
+      <CommentList comments={comments} />
     </main>
   );
 }
-
