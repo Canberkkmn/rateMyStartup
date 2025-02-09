@@ -72,6 +72,21 @@ export default function StartupPage() {
     }
   }
 
+  async function handleVote(rating: number) {
+    if (!startup) return;
+
+    const res = await fetch("http://localhost:3001/api/startups", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: startup.id, rating }),
+    });
+
+    if (res.ok) {
+      const updatedStartup = await res.json();
+      setStartup(updatedStartup);
+    }
+  }
+
   if (loading)
     return (
       <div className="text-center text-gray-600 text-xl mt-10">Loading...</div>
@@ -92,6 +107,18 @@ export default function StartupPage() {
           ⭐ {startup.rating.toFixed(1)} / 5
         </span>
         <p className="text-gray-500">({startup.votes} votes)</p>
+      </div>
+
+      <div className="mt-4 space-x-2">
+        {[1, 2, 3, 4, 5].map((rating) => (
+          <button
+            key={rating}
+            onClick={() => handleVote(rating)}
+            className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
+          >
+            {rating} ⭐
+          </button>
+        ))}
       </div>
 
       {/* Comments Section */}
@@ -139,3 +166,4 @@ export default function StartupPage() {
     </main>
   );
 }
+
