@@ -16,7 +16,7 @@ export default function CommentForm({ onAddComment }: CommentFormProps) {
   }
 
   return (
-    <div className="mb-4 p-4 border rounded bg-gray-100">
+    <div className="mb-4 mt-4 p-4 border rounded bg-gray-100">
       <input
         type="text"
         placeholder="Your name"
