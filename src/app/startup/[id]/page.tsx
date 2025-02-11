@@ -129,7 +129,7 @@ export default function StartupPage() {
   }
 
   return (
-    <div className="mx-auto p-6 bg-white shadow-md rounded-md mt-10">
+    <div className="mx-auto p-6 bg-white shadow-md rounded-md">
       <StartupDetails startup={startup} onVote={handleVote} />
       <CommentList comments={comments} />
       <CommentForm onAddComment={handleAddComment} />
