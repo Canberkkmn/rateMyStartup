@@ -6,8 +6,9 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    const { id } = await params;
     const startup = await prisma.startup.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!startup) {

@@ -129,10 +129,10 @@ export default function StartupPage() {
   }
 
   return (
-    <main className="max-w-3xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">
+    <div className="mx-auto p-6 bg-white shadow-md rounded-md mt-10">
       <StartupDetails startup={startup} onVote={handleVote} />
-      <CommentForm onAddComment={handleAddComment} />
       <CommentList comments={comments} />
-    </main>
+      <CommentForm onAddComment={handleAddComment} />
+    </div>
   );
 }

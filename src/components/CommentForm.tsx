@@ -9,7 +9,10 @@ export default function CommentForm({ onAddComment }: CommentFormProps) {
   const [author, setAuthor] = useState("");
 
   function handleSubmit() {
-    if (!newComment.trim() || !author.trim()) return;
+    if (!newComment.trim() || !author.trim()) {
+      return;
+    }
+
     onAddComment(author, newComment);
     setNewComment("");
     setAuthor("");

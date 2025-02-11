@@ -17,12 +17,12 @@ export default async function Home() {
   const startups = await getStartups();
 
   return (
-    <main className="max-w-4xl mx-auto p-6">
+    <>
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-4xl font-bold">🚀 Top Startups</h1>
         <AddStartupButton />
       </div>
       <StartupList startups={startups} />
-    </main>
+    </>
   );
 }

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scrollbar-width: none;
+}
+
 body {
   @apply bg-gray-100 text-gray-900;
 }
