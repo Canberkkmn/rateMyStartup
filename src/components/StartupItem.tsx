@@ -2,7 +2,7 @@ import Link from "next/link";
 
 interface StartupItemProps {
   startup: {
-    id: string;
+    id: number;
     name: string;
     rating: number;
   };

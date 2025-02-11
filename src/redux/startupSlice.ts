@@ -1,31 +1,28 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-interface Startup {
-  id: string;
+export interface Startup {
+  id: number;
   name: string;
   description: string;
   rating: number;
 }
 
-interface StartupsState {
+interface StartupState {
   startups: Startup[];
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
-const initialState: StartupsState = {
+const initialState: StartupState = {
   startups: [],
   status: "idle",
   error: null,
 };
 
-export const fetchStartups = createAsyncThunk(
+export const fetchStartups = createAsyncThunk<Startup[]>(
   "startups/fetchStartups",
   async () => {
     const response = await fetch("/api/startups");
-    if (!response.ok) {
-      throw new Error("Failed to fetch startups");
-    }
     return response.json();
   }
 );
@@ -33,7 +30,11 @@ export const fetchStartups = createAsyncThunk(
 const startupSlice = createSlice({
   name: "startups",
   initialState,
-  reducers: {},
+  reducers: {
+    addStartup: (state, action: PayloadAction<Startup>) => {
+      state.startups.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchStartups.pending, (state) => {
@@ -48,9 +49,10 @@ const startupSlice = createSlice({
       )
       .addCase(fetchStartups.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.error.message || "Something went wrong";
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });
 
+export const { addStartup } = startupSlice.actions;
 export default startupSlice.reducer;

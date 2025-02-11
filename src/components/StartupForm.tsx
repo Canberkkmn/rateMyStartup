@@ -1,70 +1,79 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import LoadingButton from "./LoadingButton";
-import ErrorMessage from "./ErrorMessage";
+import { useDispatch } from "react-redux";
+import { addStartup } from "@/redux/startupSlice";
 
-export default function StartupForm() {
+export default function AddStartupForm() {
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const router = useRouter();
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
+    setStatus("loading");
 
     try {
-      const res = await fetch("http://localhost:3001/api/startups", {
+      const response = await fetch("/api/startups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, description }),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to create startup.");
+      if (!response.ok) {
+        throw new Error("Failed to add startup");
       }
 
+      const newStartup = await response.json();
+      dispatch(addStartup(newStartup));
+      setStatus("success");
       setName("");
       setDescription("");
-      router.push("/");
-    } catch (err) {
-      setError("Error adding startup. Please try again.");
-    } finally {
-      setLoading(false);
+    } catch (error: any) {
+      setErrorMessage(error.message || "An error occurred");
+      setStatus("error");
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {error && <ErrorMessage message={error} />}
-      <div>
-        <label className="block text-gray-700">Startup Name</label>
+    <div className="p-4 bg-white shadow rounded">
+      <h2 className="text-xl font-bold mb-4">Add a Startup</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
-          className="w-full p-2 border rounded"
+          placeholder="Startup Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="w-full p-2 border rounded"
           required
         />
-      </div>
-      <div>
-        <label className="block text-gray-700">Description</label>
         <textarea
-          className="w-full p-2 border rounded"
+          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="w-full p-2 border rounded"
           required
-        ></textarea>
-      </div>
-      <LoadingButton
-        text="Add Startup"
-        loadingText="Adding..."
-        isLoading={loading}
-      />
-    </form>
+        />
+        <button
+          type="submit"
+          className="w-full p-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+          disabled={status === "loading"}
+        >
+          {status === "loading" ? "Adding..." : "Add Startup"}
+        </button>
+      </form>
+
+      {status === "success" && (
+        <p className="mt-4 text-green-600">Startup added successfully!</p>
+      )}
+
+      {status === "error" && (
+        <p className="mt-4 text-red-600">Error: {errorMessage}</p>
+      )}
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStartups } from "@/redux/startupSlice";
@@ -12,11 +11,10 @@ export default function StartupList() {
   const { startups, status, error } = useSelector(
     (state: RootState) => state.startups
   );
-  const pathname = usePathname();
 
   useEffect(() => {
     dispatch(fetchStartups());
-  }, [pathname, dispatch]);
+  }, [dispatch]);
 
   const setContent = () => {
     if (status === "loading") {
