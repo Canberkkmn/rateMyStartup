@@ -8,6 +8,8 @@ import CommentForm from "@/components/CommentForm";
 import LoadingMessage from "@/components/LoadingMessage";
 import ErrorMessage from "@/components/ErrorMessage";
 
+import styles from "@/styles/pages/_startup-detail.module.scss";
+
 interface Startup {
   id: string;
   name: string;
@@ -129,7 +131,7 @@ export default function StartupPage() {
   }
 
   return (
-    <div className="mx-auto p-6 bg-white shadow-md rounded-md">
+    <div className={styles.container}>
       <StartupDetails startup={startup} onVote={handleVote} />
       <CommentList comments={comments} />
       <CommentForm onAddComment={handleAddComment} />
