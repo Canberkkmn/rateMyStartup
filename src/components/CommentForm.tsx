@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 
 interface CommentFormProps {
   onAddComment: (author: string, content: string) => void;
@@ -7,38 +9,39 @@ interface CommentFormProps {
 export default function CommentForm({ onAddComment }: CommentFormProps) {
   const [newComment, setNewComment] = useState("");
   const [author, setAuthor] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit() {
     if (!newComment.trim() || !author.trim()) {
+      setError("Both fields are required.");
       return;
     }
 
     onAddComment(author, newComment);
     setNewComment("");
     setAuthor("");
+    setError(""); // Clear error on successful submit
   }
 
   return (
     <div className="mb-4 mt-4 p-4 border rounded bg-gray-100">
-      <input
-        type="text"
-        placeholder="Your name"
+      <Input
+        label="Your name"
+        placeholder="Enter your name"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
-        className="w-full p-2 mb-2 border rounded"
+        error={error && !author ? "Name is required" : ""}
       />
-      <textarea
+      <Input
+        label="Comment"
         placeholder="Write a comment..."
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
-        className="w-full p-2 border rounded"
-      ></textarea>
-      <button
-        onClick={handleSubmit}
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
+        error={error && !newComment ? "Comment cannot be empty" : ""}
+      />
+      <Button onClick={handleSubmit} variant="primary" className="mt-2">
         Add Comment
-      </button>
+      </Button>
     </div>
   );
 }

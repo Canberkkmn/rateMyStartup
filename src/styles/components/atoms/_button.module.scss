@@ -1,0 +1,51 @@
+@use "@/styles/abstracts/variables" as *;
+
+.button {
+  @apply px-4 py-2 rounded-md font-semibold transition-all duration-200 border-none cursor-pointer inline-flex items-center justify-center gap-2;
+}
+
+.button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+.button--primary {
+  background-color: $primary-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+.button--secondary {
+  background-color: $secondary-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($secondary-color, 10%);
+  }
+}
+
+.button--danger {
+  background-color: $danger-color;
+  color: white;
+
+  &:hover {
+    background-color: darken($danger-color, 10%);
+  }
+}
+
+.button--outline {
+  @apply bg-transparent border-2;
+  border-color: $primary-color;
+  color: $primary-color;
+
+  &:hover {
+    background-color: $primary-color;
+    color: white;
+  }
+}
+
+.button__loader {
+  @apply w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin;
+}

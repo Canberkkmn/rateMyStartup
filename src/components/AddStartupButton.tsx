@@ -1,11 +1,10 @@
 import Link from "next/link";
+import Button from "./atoms/Button";
 
 export default function AddStartupButton() {
   return (
     <Link href="/add-startup">
-      <button className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
-        + Add Startup
-      </button>
+      <Button variant="secondary">+ Add Startup</Button>
     </Link>
   );
 }

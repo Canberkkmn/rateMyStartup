@@ -1,0 +1,29 @@
+@use "@/styles/abstracts/variables" as *;
+
+/* Block */
+.input {
+  @apply flex flex-col gap-2;
+}
+
+/* Element */
+.input__label {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.input__field {
+  @apply px-3 py-2 border rounded-md transition-all duration-200 outline-none;
+  border: 1px solid $secondary-color;
+
+  &:focus {
+    border-color: $primary-color;
+    box-shadow: 0 0 5px rgba($primary-color, 0.5);
+  }
+
+  &--error {
+    border-color: $danger-color !important;
+  }
+}
+
+.input__error-message {
+  @apply text-sm text-red-500;
+}
