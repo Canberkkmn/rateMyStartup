@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addStartup } from "@/redux/startupSlice";
+import Input from "./atoms/Input";
+import Button from "./atoms/Button";
 
 export default function AddStartupForm() {
   const dispatch = useDispatch();
@@ -18,6 +20,8 @@ export default function AddStartupForm() {
     setStatus("loading");
 
     try {
+      console.log("Adding startup...");
+
       const response = await fetch("/api/startups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -43,28 +47,30 @@ export default function AddStartupForm() {
     <div className="p-4 bg-white shadow rounded">
       <h2 className="text-xl font-bold mb-4">Add a Startup</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          placeholder="Startup Name"
+        <Input
+          label="Startup Name"
+          placeholder="Enter startup name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="w-full p-2 border rounded"
+          error={status === "error" && !name ? "Startup name is required" : ""}
           required
         />
-        <textarea
-          placeholder="Description"
+        <Input
+          label="Description"
+          placeholder="Enter description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full p-2 border rounded"
           required
         />
-        <button
+        <Button
           type="submit"
-          className="w-full p-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+          variant="secondary"
+          className="w-full"
           disabled={status === "loading"}
+          isLoading={status === "loading"}
         >
           {status === "loading" ? "Adding..." : "Add Startup"}
-        </button>
+        </Button>
       </form>
 
       {status === "success" && (

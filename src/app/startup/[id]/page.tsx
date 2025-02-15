@@ -5,8 +5,8 @@ import { useParams } from "next/navigation";
 import StartupDetails from "@/components/StartupDetails";
 import CommentList from "@/components/CommentList";
 import CommentForm from "@/components/CommentForm";
-import LoadingMessage from "@/components/LoadingMessage";
 import ErrorMessage from "@/components/ErrorMessage";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 
 import styles from "@/styles/pages/_startup-detail.module.scss";
 
@@ -38,6 +38,8 @@ export default function StartupPage() {
 
     try {
       setLoading(true);
+
+      console.log("fetching startup details...");
 
       const res = await fetch(
         `http://localhost:3001/api/startups/${params.id}`
@@ -121,9 +123,8 @@ export default function StartupPage() {
       alert("Failed to add comment. Please try again.");
     }
   }
-
   if (loading) {
-    return <LoadingMessage />;
+    return <LoadingSpinner text="Loading startup details..." />;
   }
 
   if (!startup) {

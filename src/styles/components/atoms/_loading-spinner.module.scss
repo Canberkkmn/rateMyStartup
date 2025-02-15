@@ -1,0 +1,29 @@
+@use "@/styles/abstracts/variables" as *;
+
+/* Block */
+.spinner {
+  @apply flex flex-col items-center;
+}
+
+/* Element */
+.spinner__icon {
+  @apply border-4 border-solid border-gray-300 rounded-full animate-spin;
+}
+
+/* Modifier */
+.spinner__icon--sm {
+  @apply w-4 h-4 border-2;
+}
+
+.spinner__icon--md {
+  @apply w-6 h-6 border-4;
+}
+
+.spinner__icon--lg {
+  @apply w-10 h-10 border-4;
+}
+
+/* Loading text */
+.spinner__text {
+  @apply mt-2 text-gray-600 text-sm;
+}

@@ -22,6 +22,7 @@ const initialState: StartupState = {
 export const fetchStartups = createAsyncThunk<Startup[]>(
   "startups/fetchStartups",
   async () => {
+    console.log("Fetching startups...");
     const response = await fetch("/api/startups");
     return response.json();
   }

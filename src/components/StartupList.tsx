@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStartups } from "@/redux/startupSlice";
 import StartupItem from "./StartupItem";
+import LoadingSpinner from "./atoms/LoadingSpinner";
 
 export default function StartupList() {
   const dispatch = useDispatch<AppDispatch>();
@@ -18,7 +19,7 @@ export default function StartupList() {
 
   const setContent = () => {
     if (status === "loading") {
-      return <p className="text-gray-500">No startups found.</p>;
+      return <LoadingSpinner text="Fetching startups..." />;
     }
 
     if (status === "failed") {
