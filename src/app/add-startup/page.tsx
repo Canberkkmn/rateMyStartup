@@ -1,4 +1,4 @@
-import StartupForm from "@/components/StartupForm";
+import StartupForm from "@/components/organisms/StartupForm";
 
 import styles from "@/styles/pages/_add-startup.module.scss";
 

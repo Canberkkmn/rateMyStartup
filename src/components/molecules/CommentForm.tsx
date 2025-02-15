@@ -20,7 +20,7 @@ export default function CommentForm({ onAddComment }: CommentFormProps) {
     onAddComment(author, newComment);
     setNewComment("");
     setAuthor("");
-    setError(""); // Clear error on successful submit
+    setError("");
   }
 
   return (

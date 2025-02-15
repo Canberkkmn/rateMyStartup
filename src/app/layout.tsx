@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ReduxProvider } from "@/redux/ReduxProvider";
-import Header from "@/components/Header";
+import Header from "@/components/organisms/Header";
 
 import "@/styles/globals.scss";
 

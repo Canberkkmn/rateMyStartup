@@ -7,7 +7,7 @@
 
 /* Element */
 .spinner__icon {
-  @apply border-4 border-solid border-gray-300 rounded-full animate-spin;
+  @apply w-10 h-10 border-4 border-solid border-gray-300 border-b-red-500 rounded-full animate-spin;
 }
 
 /* Modifier */
@@ -26,4 +26,24 @@
 /* Loading text */
 .spinner__text {
   @apply mt-2 text-gray-600 text-sm;
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: #ff3d00;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addStartup } from "@/redux/startupSlice";
-import Input from "./atoms/Input";
-import Button from "./atoms/Button";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
 
 export default function AddStartupForm() {
   const dispatch = useDispatch();

@@ -2,10 +2,10 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
-import StartupDetails from "@/components/StartupDetails";
-import CommentList from "@/components/CommentList";
-import CommentForm from "@/components/CommentForm";
-import ErrorMessage from "@/components/ErrorMessage";
+import StartupDetails from "@/components/organisms/StartupDetails";
+import CommentList from "@/components/organisms/CommentList";
+import CommentForm from "@/components/molecules/CommentForm";
+import ErrorMessage from "@/components/molecules/ErrorMessage";
 import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 
 import styles from "@/styles/pages/_startup-detail.module.scss";
