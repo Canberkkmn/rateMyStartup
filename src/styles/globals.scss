@@ -4,12 +4,16 @@
 
 html {
   scrollbar-width: none;
-}
 
-body {
-  @apply bg-gray-100 text-gray-900 font-sans;
-}
+  body {
+    @apply bg-gray-100 text-gray-900 font-sans;
 
-.container {
-  @apply max-w-6xl mx-auto px-6;
+    .container {
+      @apply max-w-6xl mx-auto px-6;
+
+      main {
+        @apply mb-5;
+      }
+    }
+  }
 }
