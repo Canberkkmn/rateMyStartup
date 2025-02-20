@@ -49,8 +49,10 @@ export default function StartupPage() {
 
       const data = await res.json();
 
-      -setStartup(data);
+      setStartup(data);
     } catch (error) {
+      console.error("Error fetching startup:", error);
+      
       setStartup(null);
     } finally {
       setLoading(false);
