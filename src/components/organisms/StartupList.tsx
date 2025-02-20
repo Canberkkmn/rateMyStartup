@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchStartups } from "@/redux/startupSlice";
 import StartupItem from "@/components/molecules/StartupItem";
 import LoadingSpinner from "@/components/atoms/LoadingSpinner";
+import ErrorMessage from "../molecules/ErrorMessage";
 
 export default function StartupList() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +31,7 @@ export default function StartupList() {
     }
 
     if (status === "failed") {
-      return <p className="text-red-500">{error}</p>;
+      return <ErrorMessage message={error || ""} />;
     }
 
     if (filteredStartups.length === 0) {

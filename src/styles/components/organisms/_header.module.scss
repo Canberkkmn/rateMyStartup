@@ -1,0 +1,11 @@
+.header {
+  @apply relative py-6 border-b bg-white shadow-md rounded-md mb-6 text-center flex items-center justify-center;
+
+  &__title {
+    @apply text-3xl font-bold cursor-pointer transition hover:text-blue-500 text-gray-900;
+  }
+
+  &__toggle {
+    @apply absolute right-6;
+  }
+}

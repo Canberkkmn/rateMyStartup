@@ -11,19 +11,23 @@ interface ThemeToggleProps {
 }
 
 const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
-  const [theme, setTheme] = useState<"light" | "dark">(
-    (localStorage.getItem("theme") as "light" | "dark" | null) || "light"
-  );
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme") as
       | "light"
       | "dark"
       | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-      document.documentElement.classList.toggle("dark", storedTheme === "dark");
-    }
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
+
+    const initialTheme = storedTheme || (prefersDark ? "dark" : "light");
+    setTheme(initialTheme);
+    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+
+    setMounted(true);
   }, []);
 
   const toggleTheme = () => {
@@ -34,18 +38,19 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   };
 
   return (
-    <button
+    <Button
       onClick={toggleTheme}
       className={clsx(
-        styles["toggle-button"],
-        styles[`toggle-button--${theme}`],
+        styles["theme-toggle"],
+        styles[`theme-toggle--${theme}`],
         className
       )}
+      isLoading={!mounted}
     >
-      <span className={styles["toggle-button__icon"]}>
+      <span className={styles["theme-toggle__icon"]}>
         {theme === "light" ? "🌙" : "☀️"}
       </span>
-    </button>
+    </Button>
   );
 };
 
