@@ -1,0 +1,7 @@
+.comment-form__wrapper {
+  @apply mb-4 mt-4 p-4 border rounded bg-gray-100;
+
+  .comment-form__button {
+    @apply mt-2;
+  }
+}

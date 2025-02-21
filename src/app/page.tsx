@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import StartupList from "@/components/organisms/StartupList";
 import SearchInput from "@/components/molecules/SearchInput";
 import Button from "@/components/atoms/Button";
+import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 
 import styles from "@/styles/pages/_home.module.scss";
 
@@ -12,8 +13,7 @@ export default function Home() {
       <div className={styles.header}>
         <h1 className={styles.title}>Startups</h1>
 
-        {/* SearchInput Suspense içinde olmalı */}
-        <Suspense fallback={<div>Loading search...</div>}>
+        <Suspense fallback={<LoadingSpinner text="Loading search input..." />}>
           <SearchInput />
         </Suspense>
 
@@ -22,8 +22,7 @@ export default function Home() {
         </Link>
       </div>
 
-      {/* StartupList Suspense içinde olmalı */}
-      <Suspense fallback={<div>Loading startups...</div>}>
+      <Suspense fallback={<LoadingSpinner text="Loading startup list..." />}>
         <StartupList />
       </Suspense>
     </>

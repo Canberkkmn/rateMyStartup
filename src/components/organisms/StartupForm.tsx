@@ -22,8 +22,6 @@ export default function AddStartupForm() {
     setStatus("loading");
 
     try {
-      console.log("Adding startup...");
-
       const response = await fetch("/api/startups", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,7 +45,6 @@ export default function AddStartupForm() {
 
   return (
     <div className="p-4 bg-white shadow rounded">
-      <h2 className="text-xl font-bold mb-4">Add a Startup</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label="Startup Name"

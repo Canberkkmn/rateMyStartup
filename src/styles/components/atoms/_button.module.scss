@@ -1,3 +1,4 @@
+@use "sass:color";
 @use "@/styles/abstracts/variables" as *;
 
 .button {
@@ -9,29 +10,29 @@
 }
 
 .button--primary {
+  @apply text-white;
   background-color: $primary-color;
-  color: white;
 
   &:hover {
-    background-color: darken($primary-color, 10%);
+    background-color: color.adjust($primary-color, $lightness: -10%);
   }
 }
 
 .button--secondary {
+  @apply text-white;
   background-color: $secondary-color;
-  color: white;
 
   &:hover {
-    background-color: darken($secondary-color, 10%);
+    background-color: color.adjust($secondary-color, $lightness: -10%);
   }
 }
 
 .button--danger {
+  @apply text-white;
   background-color: $danger-color;
-  color: white;
 
   &:hover {
-    background-color: darken($danger-color, 10%);
+    background-color: color.adjust($danger-color, $lightness: -10%);
   }
 }
 
@@ -41,8 +42,8 @@
   color: $primary-color;
 
   &:hover {
+    @apply text-white;
     background-color: $primary-color;
-    color: white;
   }
 }
 

@@ -39,20 +39,20 @@ export default function StartupPage() {
     try {
       setLoading(true);
 
-      console.log("fetching startup details...");
-
       const res = await fetch(
         `http://localhost:3001/api/startups/${params.id}`
       );
 
-      if (!res.ok) throw new Error("Failed to fetch startup");
+      if (!res.ok) {
+        throw new Error("Failed to fetch startup");
+      }
 
       const data = await res.json();
 
       setStartup(data);
     } catch (error) {
       console.error("Error fetching startup:", error);
-      
+
       setStartup(null);
     } finally {
       setLoading(false);
