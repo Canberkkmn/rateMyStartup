@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStartups } from "@/redux/startupSlice";
+import { fetchStartups, Startup } from "@/redux/startupSlice";
 import StartupItem from "@/components/molecules/StartupItem";
 import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import ErrorMessage from "../molecules/ErrorMessage";
@@ -40,7 +40,7 @@ export default function StartupList() {
       );
     }
 
-    return filteredStartups.map((startup) => (
+    return filteredStartups.map((startup: Startup) => (
       <StartupItem key={startup.id} startup={startup} />
     ));
   };
