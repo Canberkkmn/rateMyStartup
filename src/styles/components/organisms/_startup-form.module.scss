@@ -1,0 +1,21 @@
+@use "@/styles/abstracts/variables" as *;
+
+.startup-form {
+  @apply p-4 bg-white shadow rounded;
+
+  &__form {
+    @apply space-y-4;
+  }
+
+  &__button {
+    @apply w-full;
+  }
+
+  &__success-message {
+    @apply mt-4 text-green-600;
+  }
+
+  &__error-message {
+    @apply mt-4 text-red-600;
+  }
+}

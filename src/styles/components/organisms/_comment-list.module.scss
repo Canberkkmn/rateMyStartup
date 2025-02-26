@@ -1,0 +1,29 @@
+@use "@/styles/abstracts/variables" as *;
+
+.comment-list {
+  @apply mt-6;
+
+  &__title {
+    @apply text-2xl font-bold mb-4;
+  }
+
+  &__empty {
+    @apply text-gray-500;
+  }
+
+  &__item {
+    @apply p-3 border-b;
+  }
+
+  &__author {
+    @apply font-semibold;
+  }
+
+  &__content {
+    @apply text-gray-600;
+  }
+
+  &__date {
+    @apply text-sm text-gray-400;
+  }
+}

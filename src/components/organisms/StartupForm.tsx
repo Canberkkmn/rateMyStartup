@@ -8,13 +8,13 @@ import { addStartup } from "@/redux/startupSlice";
 import Input from "@/components/atoms/Input";
 import Button from "@/components/atoms/Button";
 
+import styles from "@/styles/components/organisms/_startup-form.module.scss";
+
 export default function AddStartupForm() {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,8 +44,8 @@ export default function AddStartupForm() {
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded">
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className={styles["startup-form"]}>
+      <form onSubmit={handleSubmit} className={styles["startup-form__form"]}>
         <Input
           label="Startup Name"
           placeholder="Enter startup name"
@@ -64,7 +64,7 @@ export default function AddStartupForm() {
         <Button
           type="submit"
           variant="secondary"
-          className="w-full"
+          className={styles["startup-form__button"]}
           disabled={status === "loading"}
           isLoading={status === "loading"}
         >
@@ -73,11 +73,15 @@ export default function AddStartupForm() {
       </form>
 
       {status === "success" && (
-        <p className="mt-4 text-green-600">Startup added successfully!</p>
+        <p className={styles["startup-form__success-message"]}>
+          Startup added successfully!
+        </p>
       )}
-
+F
       {status === "error" && (
-        <p className="mt-4 text-red-600">Error: {errorMessage}</p>
+        <p className={styles["startup-form__error-message"]}>
+          Error: {errorMessage}
+        </p>
       )}
     </div>
   );

@@ -1,0 +1,31 @@
+@use "@/styles/abstracts/variables" as *;
+
+.startup-details {
+  &__title {
+    @apply text-3xl font-bold;
+  }
+
+  &__description {
+    @apply text-gray-600 mt-2;
+  }
+
+  &__rating {
+    @apply mt-4;
+  }
+
+  &__stars {
+    @apply text-yellow-500 font-bold;
+  }
+
+  &__votes {
+    @apply text-gray-500;
+  }
+
+  &__buttons {
+    @apply mt-4 space-x-2;
+  }
+
+  &__button {
+    @apply bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700;
+  }
+}

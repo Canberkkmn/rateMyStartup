@@ -9,6 +9,8 @@ import StartupItem from "@/components/molecules/StartupItem";
 import LoadingSpinner from "@/components/atoms/LoadingSpinner";
 import ErrorMessage from "../molecules/ErrorMessage";
 
+import styles from "@/styles/components/organisms/_startup-list.module.scss";
+
 export default function StartupList() {
   const dispatch = useDispatch<AppDispatch>();
   const { startups, status, error } = useSelector(
@@ -36,7 +38,9 @@ export default function StartupList() {
 
     if (filteredStartups.length === 0) {
       return (
-        <p className="text-gray-500">No startups found matching your search.</p>
+        <p className={styles["startup-list__empty"]}>
+          No startups found matching your search.
+        </p>
       );
     }
 
@@ -45,5 +49,5 @@ export default function StartupList() {
     ));
   };
 
-  return <ul className="space-y-4">{setContent()}</ul>;
+  return <ul className={styles["startup-list"]}>{setContent()}</ul>;
 }

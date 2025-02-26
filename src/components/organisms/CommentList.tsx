@@ -1,3 +1,5 @@
+import styles from "@/styles/components/organisms/_comment-list.module.scss";
+
 interface Comment {
   id: string;
   content: string;
@@ -12,14 +14,14 @@ interface CommentListProps {
 export default function CommentList({ comments }: CommentListProps) {
   const setContent = () => {
     if (comments.length <= 0) {
-      return <p className="text-gray-500">No comments yet.</p>;
+      return <p className={styles["comment-list__empty"]}>No comments yet.</p>;
     }
 
     return comments.map((comment) => (
-      <div key={comment.id} className="p-3 border-b">
-        <p className="font-semibold">{comment.author}</p>
-        <p className="text-gray-600">{comment.content}</p>
-        <p className="text-sm text-gray-400">
+      <div key={comment.id} className={styles["comment-list__item"]}>
+        <p className={styles["comment-list__author"]}>{comment.author}</p>
+        <p className={styles["comment-list__content"]}>{comment.content}</p>
+        <p className={styles["comment-list__date"]}>
           {new Date(comment.createdAt).toLocaleString()}
         </p>
       </div>
@@ -27,8 +29,8 @@ export default function CommentList({ comments }: CommentListProps) {
   };
 
   return (
-    <div className="mt-6">
-      <h2 className="text-2xl font-bold mb-4">Comments</h2>
+    <div className={styles["comment-list"]}>
+      <h2 className={styles["comment-list__title"]}>Comments</h2>
       {setContent()}
     </div>
   );

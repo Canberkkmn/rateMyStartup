@@ -1,0 +1,9 @@
+@use "@/styles/abstracts/variables" as *;
+
+.startup-list {
+  @apply space-y-4;
+
+  &__empty {
+    @apply text-gray-500;
+  }
+}

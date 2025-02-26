@@ -9,17 +9,15 @@ import LoadingSpinner from "../atoms/LoadingSpinner";
 import ErrorMessage from "../molecules/ErrorMessage";
 import { voteForStartup } from "@/redux/voteSlice";
 
+import styles from "@/styles/components/organisms/_startup-details.module.scss";
+
 export default function StartupDetails() {
   const params = useParams();
   const dispatch = useDispatch<AppDispatch>();
   const { selectedStartup, status } = useSelector(
     (state: RootState) => state.startups
   );
-  const { status: voteStatus, error } = useSelector(
-    (state: RootState) => state.votes
-  );
-
-  console.log("selectedStartup", selectedStartup, voteStatus);
+  const { status: voteStatus } = useSelector((state: RootState) => state.votes);
 
   useEffect(() => {
     if (params.id) {
@@ -40,27 +38,35 @@ export default function StartupDetails() {
   }
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold">{selectedStartup?.name}</h1>
-      <p className="text-gray-600 mt-2">{selectedStartup?.description}</p>
+    <div className={styles["startup-details"]}>
+      <h1 className={styles["startup-details__title"]}>
+        {selectedStartup?.name}
+      </h1>
+      <p className={styles["startup-details__description"]}>
+        {selectedStartup?.description}
+      </p>
 
-      <div className="mt-4">
-        <span className="text-yellow-500 font-bold">
+      <div className={styles["startup-details__rating"]}>
+        <span className={styles["startup-details__stars"]}>
           ⭐ {selectedStartup?.rating.toFixed(1)} / 5
         </span>
-        <p className="text-gray-500">({selectedStartup?.votes} votes)</p>
+        <p className={styles["startup-details__votes"]}>
+          ({selectedStartup?.votes} votes)
+        </p>
       </div>
-      <div className="mt-4 space-x-2">
+
+      <div className={styles["startup-details__buttons"]}>
         {[1, 2, 3, 4, 5].map((rating) => (
           <button
             key={rating}
             onClick={() => handleVote(rating)}
-            className="bg-blue-500 text-white px-3 py-2 rounded hover:bg-blue-700"
+            className={styles["startup-details__button"]}
           >
             {rating} ⭐
           </button>
         ))}
       </div>
+
       {voteStatus !== "idle" && <ErrorMessage message={voteStatus} />}
     </div>
   );
