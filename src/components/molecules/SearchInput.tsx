@@ -38,6 +38,10 @@ const SearchInput: React.FC = () => {
         placeholder="Search startups..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        id="search"
+        name="search"
+        aria-label="Search for startups"
+        aria-live="polite"
       />
     </div>
   );

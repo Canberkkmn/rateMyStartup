@@ -13,7 +13,9 @@ export default function CommentForm({ onAddComment }: CommentFormProps) {
   const [author, setAuthor] = useState("");
   const [error, setError] = useState("");
 
-  function handleSubmit() {
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+
     if (!newComment.trim() || !author.trim()) {
       setError("Both fields are required.");
       return;
@@ -23,31 +25,40 @@ export default function CommentForm({ onAddComment }: CommentFormProps) {
     setNewComment("");
     setAuthor("");
     setError("");
-  }
+  };
 
   return (
-    <div className={styles["comment-form__wrapper"]}>
+    <form
+      className={styles["comment-form__wrapper"]}
+      onSubmit={handleFormSubmit}
+    >
       <Input
         label="Your name"
+        name="author"
+        id="author"
         placeholder="Enter your name"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
         error={error && !author ? "Name is required" : ""}
+        aria-describedby="error-message"
       />
       <Input
         label="Comment"
+        name="comment"
+        id="comment"
         placeholder="Write a comment..."
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
         error={error && !newComment ? "Comment cannot be empty" : ""}
+        aria-describedby="error-message"
       />
       <Button
-        onClick={handleSubmit}
+        type="submit"
         variant="secondary"
         className={styles["comment-form__button"]}
       >
         Add Comment
       </Button>
-    </div>
+    </form>
   );
 }

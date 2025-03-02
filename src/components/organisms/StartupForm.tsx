@@ -77,7 +77,6 @@ export default function AddStartupForm() {
           Startup added successfully!
         </p>
       )}
-F
       {status === "error" && (
         <p className={styles["startup-form__error-message"]}>
           Error: {errorMessage}

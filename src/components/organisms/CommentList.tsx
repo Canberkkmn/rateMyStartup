@@ -12,26 +12,44 @@ interface CommentListProps {
 }
 
 export default function CommentList({ comments }: CommentListProps) {
-  const setContent = () => {
-    if (comments.length <= 0) {
-      return <p className={styles["comment-list__empty"]}>No comments yet.</p>;
-    }
-
-    return comments.map((comment) => (
-      <div key={comment.id} className={styles["comment-list__item"]}>
-        <p className={styles["comment-list__author"]}>{comment.author}</p>
-        <p className={styles["comment-list__content"]}>{comment.content}</p>
-        <p className={styles["comment-list__date"]}>
-          {new Date(comment.createdAt).toLocaleString()}
-        </p>
-      </div>
-    ));
-  };
+  const formattedDate = (date: string) =>
+    new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(new Date(date));
 
   return (
-    <div className={styles["comment-list"]}>
-      <h2 className={styles["comment-list__title"]}>Comments</h2>
-      {setContent()}
-    </div>
+    <section
+      className={styles["comment-list"]}
+      aria-labelledby="comments-title"
+    >
+      <h2 id="comments-title" className={styles["comment-list__title"]}>
+        Comments
+      </h2>
+      {comments.length === 0 ? (
+        <p className={styles["comment-list__empty"]} role="status">
+          No comments yet.
+        </p>
+      ) : (
+        <ul className={styles["comment-list__items"]} aria-live="polite">
+          {comments.map((comment) => (
+            <li key={comment.id} className={styles["comment-list__item"]}>
+              <p className={styles["comment-list__author"]}>
+                <strong>{comment.author}</strong>
+              </p>
+              <p className={styles["comment-list__content"]}>
+                {comment.content}
+              </p>
+              <p className={styles["comment-list__date"]}>
+                {formattedDate(comment.createdAt)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }

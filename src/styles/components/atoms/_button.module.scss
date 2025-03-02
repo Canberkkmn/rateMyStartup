@@ -3,50 +3,51 @@
 
 .button {
   @apply px-4 py-2 rounded-md font-semibold transition-all duration-200 border-none cursor-pointer inline-flex items-center justify-center gap-2;
-}
+  @apply focus-visible:outline focus-visible:ring-2 focus-visible:ring-offset-2;
 
-.button:disabled {
-  @apply opacity-50 cursor-not-allowed;
-}
-
-.button--primary {
-  @apply text-white;
-  background-color: $primary-color;
-
-  &:hover {
-    background-color: color.adjust($primary-color, $lightness: -10%);
+  &:disabled {
+    @apply opacity-50 cursor-not-allowed;
   }
-}
 
-.button--secondary {
-  @apply text-white;
-  background-color: $secondary-color;
-
-  &:hover {
-    background-color: color.adjust($secondary-color, $lightness: -10%);
-  }
-}
-
-.button--danger {
-  @apply text-white;
-  background-color: $danger-color;
-
-  &:hover {
-    background-color: color.adjust($danger-color, $lightness: -10%);
-  }
-}
-
-.button--outline {
-  @apply bg-transparent border-2;
-  border-color: $primary-color;
-  color: $primary-color;
-
-  &:hover {
+  &--primary {
     @apply text-white;
     background-color: $primary-color;
-  }
-}
 
-.button__loader {
-  @apply w-7 h-7 border-2 border-white border-t-transparent rounded-full animate-spin;
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: -10%);
+    }
+  }
+
+  &--secondary {
+    @apply text-white;
+    background-color: $secondary-color;
+
+    &:hover {
+      background-color: color.adjust($secondary-color, $lightness: -10%);
+    }
+  }
+
+  &--danger {
+    @apply text-white;
+    background-color: $danger-color;
+
+    &:hover {
+      background-color: color.adjust($danger-color, $lightness: -10%);
+    }
+  }
+
+  &--outline {
+    @apply bg-transparent border-2;
+    border-color: $primary-color;
+    color: $primary-color;
+
+    &:hover {
+      @apply text-white;
+      background-color: $primary-color;
+    }
+  }
+
+  .button__loader {
+    @apply w-7 h-7 border-2 border-white border-t-transparent rounded-full animate-spin;
+  }
 }

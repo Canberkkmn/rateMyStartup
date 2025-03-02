@@ -30,7 +30,13 @@ export default function StartupDetails() {
   }
 
   if (status === "idle" || !selectedStartup) {
-    return <LoadingSpinner text="Fetching startup" />;
+    return (
+      <LoadingSpinner
+        text="Fetching startup"
+        aria-live="polite"
+        aria-busy="true"
+      />
+    );
   }
 
   if (status === "failed") {
@@ -38,16 +44,24 @@ export default function StartupDetails() {
   }
 
   return (
-    <div className={styles["startup-details"]}>
-      <h1 className={styles["startup-details__title"]}>
+    <section
+      className={styles["startup-details"]}
+      role="region"
+      aria-labelledby="startup-title"
+      aria-live="polite"
+    >
+      <h1 id="startup-title" className={styles["startup-details__title"]}>
         {selectedStartup?.name}
       </h1>
       <p className={styles["startup-details__description"]}>
         {selectedStartup?.description}
       </p>
 
-      <div className={styles["startup-details__rating"]}>
-        <span className={styles["startup-details__stars"]}>
+      <div
+        className={styles["startup-details__rating"]}
+        aria-describedby="rating-info"
+      >
+        <span className={styles["startup-details__stars"]} id="rating-info">
           ⭐ {selectedStartup?.rating.toFixed(1)} / 5
         </span>
         <p className={styles["startup-details__votes"]}>
@@ -61,6 +75,7 @@ export default function StartupDetails() {
             key={rating}
             onClick={() => handleVote(rating)}
             className={styles["startup-details__button"]}
+            aria-label={`Rate ${selectedStartup?.name} ${rating} stars`}
           >
             {rating} ⭐
           </button>
@@ -68,6 +83,6 @@ export default function StartupDetails() {
       </div>
 
       {voteStatus !== "idle" && <ErrorMessage message={voteStatus} />}
-    </div>
+    </section>
   );
 }

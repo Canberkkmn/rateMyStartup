@@ -17,9 +17,11 @@ export default function Home() {
           <SearchInput />
         </Suspense>
 
-        <Link href="/add-startup">
-          <Button variant="secondary">+ Add Startup</Button>
-        </Link>
+        <Button variant="secondary">
+          <Link href="/add-startup" tabIndex={-1}>
+            + Add Startup
+          </Link>
+        </Button>
       </div>
 
       <Suspense fallback={<LoadingSpinner text="Loading startup list..." />}>

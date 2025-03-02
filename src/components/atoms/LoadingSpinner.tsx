@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import { useId } from "react";
 import clsx from "clsx";
 
 import styles from "@/styles/components/atoms/_loading-spinner.module.scss";
@@ -14,15 +16,27 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   text,
   className,
 }) => {
+  const spinnerId = useId();
+
   return (
-    <div className={clsx(styles["spinner"], className)}>
+    <div
+      className={clsx(styles["spinner"], className)}
+      role="status"
+      aria-live="polite"
+      aria-labelledby={text ? spinnerId : undefined}
+      aria-label={text ? undefined : "Loading"}
+    >
       <div
         className={clsx(
           styles["spinner__icon"],
           styles[`spinner__icon--${size}`]
         )}
       />
-      {text && <p className={styles["spinner__text"]}>{text}</p>}
+      {text && (
+        <p id={spinnerId} className={styles["spinner__text"]}>
+          {text}
+        </p>
+      )}
     </div>
   );
 };
