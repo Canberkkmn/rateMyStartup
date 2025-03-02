@@ -20,7 +20,8 @@ const Input: React.FC<InputProps> = ({
   disabled,
   ...props
 }) => {
-  const inputId = id || useId();
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
   const errorId = error ? `${inputId}-error` : undefined;
 
   return (
