@@ -7,6 +7,7 @@ RateMyStartup is a platform for reviewing and rating startups. Users can browse 
 - 🔍 **Startup Listing:** Displays all registered startups from PostgreSQL.
 - ➕ **Add Startup:** Users can submit new startups.
 - ⭐ **Vote on Startups:** Users can rate startups from 1 to 5 stars.
+- 🔄 **Real-time Updates:** Instant UI updates after voting or adding startups.
 - 🗃 **Persistent Database:** Data is stored using PostgreSQL.
 
 ---
@@ -18,6 +19,7 @@ RateMyStartup is a platform for reviewing and rating startups. Users can browse 
 - [Tailwind CSS](https://tailwindcss.com/) - UI styling
 - [PostgreSQL](https://www.postgresql.org/) - Persistent database
 - [Prisma](https://www.prisma.io/) - ORM & database management
+- [Redux](https://redux.js.org) - Global State management
 
 ---
 
